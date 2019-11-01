@@ -8,42 +8,44 @@ def get_age():
     return (now - time_founded).days // 365
 
 
-def drink_parse(file):
+def parse_drink(file):
     with open(file, 'r') as drink_file:
-        drinks = drink_file.read().split('\n\n')
+        data = drink_file.read().split('\n\n\n')
 
-    drinks_list = []
-    drinks_dict = {}
-    one_drink = {}
+    drinks = []
+    category = {}
+    drink = {}
 
-    for row in drinks:
+    for row in data:
         if '#' in row:
-            drinks_dict['title'] = row.split('# ')[-1]
-            drinks_dict['drinks'] = []
+            category['name'] = row.split('# ')[-1]
+            category['drinks'] = []
 
         if 'Название' in row:
-            drink = row.split('\n')
-            for line in drink:
-                if 'Название' in line:
-                    one_drink['name'] = line.split(': ')[-1]
-                if 'Сорт' in line:
-                    one_drink['sort'] = line.split(': ')[-1]
-                if 'Цена' in line:
-                    one_drink['price'] = line.split(': ')[-1]
-                if 'Выгодное предложение' in line:
-                    one_drink['good_offer'] = True
-                if 'Картинка' in line:
-                    one_drink['image'] = line.split(': ')[-1]
+            drinks_data = row.split('\n\n')
 
-            drinks_dict['drinks'].append(one_drink)
-            one_drink = {}
+            for drink_data in drinks_data:
+                _row = drink_data.split('\n')
+                for line in _row:
+                    if 'Название' in line:
+                        drink['name'] = line.split(': ')[-1]
+                    if 'Сорт' in line:
+                        drink['sort'] = line.split(': ')[-1]
+                    if 'Цена' in line:
+                        drink['price'] = line.split(': ')[-1]
+                    if 'Выгодное предложение' in line:
+                        drink['good_offer'] = True
+                    if 'Картинка' in line:
+                        drink['image'] = line.split(': ')[-1]
 
-        if len(drinks_dict['drinks']) == 3:
-            drinks_list.append(drinks_dict)
-            drinks_dict = {}
+                category['drinks'].append(drink)
+                drink = {}
 
-    return drinks_list
+            drinks.append(category)
+            category = {}
+
+    return drinks
 
 
 if __name__ == '__main__':
-    pprint(drink_parse('wine'))
+    pprint(parse_drink('wine'))

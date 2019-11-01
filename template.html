@@ -120,7 +120,7 @@
 
       {% for category in drinks %}
       <div class="col-12 section-title text-center mb-5">
-        <h2 class="d-block">{{ category.title }}</h2>
+        <h2 class="d-block">{{ category.name }}</h2>
       </div>
       <div class="row">
 
@@ -130,12 +130,13 @@
           <div class="wine_v_1 text-center pb-4 pt-5">
             <img src="{{ drink.image }}" alt="Image" class="img-fluid">
             {% if drink.good_offer %}
-            <img src="images/profitable.png" style="width:10rem;height: 10rem;position:absolute;right: -20px;top: -20px;">
+            <img src="images/profitable.png"
+                 style="width:10rem;height: 10rem;position:absolute;right: -20px;top: -20px;">
             {% endif %}
             <div>
               <h3 class="heading mt-3 mb-3 text-dark">{{ drink.name }}</h3>
               <p>
-                {% if drink.title != 'Напитки' %}
+                {% if category.name != 'Напитки' %}
                 Сорт винограда - {{ drink.sort }}<br/>
                 {% endif %}
                 <span class="price">{{ drink.price }} р.</span>
