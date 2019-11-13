@@ -44,6 +44,7 @@ def parse_drinks_data(file):
             drinks_data = row.split('\n\n')
 
             for drink_data in drinks_data:
+                # Из за добавления функции исчезла вложенность if'ов и for'ов
                 drink = parse_drink(drink_data)
                 category['drinks'].append(drink)
 
