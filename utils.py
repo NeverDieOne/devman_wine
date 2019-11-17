@@ -15,7 +15,7 @@ def parse_drink(drink_data):
     for line in part_wine_info:
         if 'Название' in line:
             drink['name'] = line.split(': ')[-1]
-        if 'Сорт' in line:
+        if 'Сорт' in line and len(line.split(': ')) > 1:
             drink['sort'] = line.split(': ')[-1]
         if 'Цена' in line:
             drink['price'] = line.split(': ')[-1]
@@ -27,26 +27,29 @@ def parse_drink(drink_data):
     return drink
 
 
-def parse_drinks_data(file):
+def read_file(file):
     with open(file, 'r') as drink_file:
         data = drink_file.read().split('\n\n\n')
 
+    return data
+
+
+def parse_drinks_data(file):
+    data = read_file(file)
+
     drinks = []
 
-    for row in data:
-        if '#' in row:
+    for chunk in data:
+        if '#' in chunk:
             category = {
-                'name': row.split('# ')[-1],
+                'name': chunk.split('# ')[-1],
                 'drinks': []
             }
 
-        if 'Название' in row:
-            drinks_data = row.split('\n\n')
+        if 'Название' in chunk:
+            drinks_data = chunk.split('\n\n')
 
-            for drink_data in drinks_data:
-                # Из за добавления функции исчезла вложенность if'ов и for'ов
-                drink = parse_drink(drink_data)
-                category['drinks'].append(drink)
+            [category['drinks'].append(parse_drink(drink)) for drink in drinks_data]
 
             drinks.append(category)
             category = {}
