@@ -9,10 +9,12 @@ env = Environment(
 )
 template = env.get_template('template.html')
 
+with open('wine', 'r') as drink_file:
+    data = drink_file.read()
 
 rendered_page = template.render(
     time=get_age(),
-    drinks=parse_drinks_data('wine')
+    drinks=parse_drinks_data(data)
 )
 
 with open('index.html', 'w', encoding="utf8") as file:

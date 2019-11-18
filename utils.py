@@ -27,19 +27,11 @@ def parse_drink(drink_data):
     return drink
 
 
-def read_file(file):
-    with open(file, 'r') as drink_file:
-        data = drink_file.read().split('\n\n\n')
-
-    return data
-
-
-def parse_drinks_data(file):
-    data = read_file(file)
-
+def parse_drinks_data(data):
+    chunks = data.split('\n\n\n')
     drinks = []
 
-    for chunk in data:
+    for chunk in chunks:
         if '#' in chunk:
             category = {
                 'name': chunk.split('# ')[-1],
@@ -49,7 +41,8 @@ def parse_drinks_data(file):
         if 'Название' in chunk:
             drinks_data = chunk.split('\n\n')
 
-            [category['drinks'].append(parse_drink(drink)) for drink in drinks_data]
+            parsed_drinks = [parse_drink(drink) for drink in drinks_data]
+            category['drinks'].extend(parsed_drinks)
 
             drinks.append(category)
             category = {}
