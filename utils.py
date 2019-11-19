@@ -1,5 +1,4 @@
 import datetime
-from pprint import pprint
 
 
 def get_age():
@@ -8,10 +7,10 @@ def get_age():
     return current_year - year_founded
 
 
-def parse_drink(drink_data):
+def parse_drink(drink_description):
     drink = {}
 
-    part_wine_info = drink_data.split('\n')
+    part_wine_info = drink_description.split('\n')
     for line in part_wine_info:
         if 'Название' in line:
             drink['name'] = line.split(': ')[-1]
@@ -27,8 +26,8 @@ def parse_drink(drink_data):
     return drink
 
 
-def parse_drinks_data(data):
-    chunks = data.split('\n\n\n')
+def parse_drinks_list(drinks_list):
+    chunks = drinks_list.split('\n\n\n')
     drinks = []
 
     for chunk in chunks:
@@ -48,7 +47,3 @@ def parse_drinks_data(data):
             category = {}
 
     return drinks
-
-
-if __name__ == '__main__':
-    pprint(parse_drinks_data('wine'))

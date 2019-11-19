@@ -1,6 +1,6 @@
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from jinja2 import Environment, FileSystemLoader, select_autoescape
-from utils import get_age, parse_drinks_data
+from utils import get_age, parse_drinks_list
 
 
 env = Environment(
@@ -10,11 +10,11 @@ env = Environment(
 template = env.get_template('template.html')
 
 with open('wine', 'r') as drink_file:
-    data = drink_file.read()
+    drinks_list = drink_file.read()
 
 rendered_page = template.render(
     time=get_age(),
-    drinks=parse_drinks_data(data)
+    drinks=parse_drinks_list(drinks_list)
 )
 
 with open('index.html', 'w', encoding="utf8") as file:
